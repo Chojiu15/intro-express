@@ -15,6 +15,14 @@ app.use(movieRouter, userRouter)
 
 const MONGO_URI = process.env.MONGO_URI
 
+
+app.get('/', (request, response) => {
+    response.send(`Welcome to my API`)
+})
+
+
+
+
 mongoose.connect(MONGO_URI)
 const db = mongoose.connection
 db.on('connected', () => {
@@ -22,9 +30,7 @@ db.on('connected', () => {
 })
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
-app.get('/', (request, response) => {
-    response.send(`Welcome to my API`)
-})
+
 
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
