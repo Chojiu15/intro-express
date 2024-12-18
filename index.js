@@ -16,9 +16,17 @@ app.use(movieRouter, userRouter)
 const MONGO_URI = process.env.MONGO_URI
 
 
-app.get('/', (request, response) => {
-    response.send(`Welcome to my API`)
-})
+const firstMiddleware =  (request, response, next) => {
+    console.log(`Welcome to my API`)
+    next()
+}
+
+const secondMiddleware = (request, response, next) => {
+    response.send('Hello world')
+}
+
+
+app.get('/', firstMiddleware, secondMiddleware)
 
 
 

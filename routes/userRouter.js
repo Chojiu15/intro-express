@@ -37,7 +37,47 @@ userRouter.post('/user', userCreation, emailVerification, async (req, res) => {
     }
 })
 
+userRouter.get('/user/:id', async (req, res) => {
+    const {id} = req.params
+    try{
+        const userByID = await User.findById(id)
+        if(!userByID){
+            return res.status(400).json({message : 'User not found'})
+        }
+        return res.json(userByID)
+    }
+    catch (err) {
+        console.log(err)
+        return res.status(500).json({ message: 'Internal server error' })
+    }
+})
 
+userRouter.put('/user/:id', async (req, res) => {
+    const {id} = req.params
+    try{
+       const updatedUser = await User.findByIdAndUpdate(id, req.body, {new : true})
+       return res.status(200).json(updatedUser)
+    }
+    catch (err) {
+        console.log(err)
+        return res.status(500).json({ message: 'Internal server error' })
+    }
+})
+
+userRouter.delete('/user/:id', async (req, res) => {
+    const {id} = req.params
+    try{
+        const deleteUser = await User.deleteOne({_id : id})
+        if(deleteUser.deletedCount === 1){
+            return res.status(203).json({message : 'User has been deleted'})
+        }
+        return res.status(400).json({message : 'User not found'})
+     }
+     catch (err) {
+         console.log(err)
+         return res.status(500).json({ message: 'Internal server error' })
+     }
+})
 
 
 export default userRouter
